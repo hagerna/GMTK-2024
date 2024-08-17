@@ -4,11 +4,20 @@ using UnityEngine;
 
 public abstract class Producer : MonoBehaviour
 {
-    protected float productionMultiplier = 1f;
-    ProductionType type = ProductionType.Score;
+    ProductionType _type = ProductionType.Score;
     float _prodDelay = 1f;
     float _prodTimer = 0f;
+    protected float _prodMultiplier = 1f;
+    protected float _lockInMultiplier = 0f;
     protected bool isProducing = false;
+
+    protected void SetupProduction(ShapeSO scriptable)
+    {
+        _type = scriptable.prodType;
+        _prodMultiplier = scriptable.prodMultiplier;
+        _lockInMultiplier = scriptable.lockInMultiplier;
+        _prodDelay = scriptable.prodDelay;
+    }
 
     // Update is called once per frame
     void Update()
@@ -28,9 +37,14 @@ public abstract class Producer : MonoBehaviour
         }
     }
 
+    protected void StopProduction()
+    {
+        isProducing = false;
+    }
+
     public virtual void Produce()
     {
-        GameManager.instance.AddProduction(type, productionMultiplier * getArea());
+        GameManager.instance.AddProduction(_type, _prodMultiplier * getArea());
     }
 
     public float getArea()

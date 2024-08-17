@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class DirectionScaler : SmartScaler
 {
-    Vector3 growDirection = Vector3.up;
     Vector3 startPosition;
-    float halfStartingHeight;
 
     private void Awake()
     {
         startPosition = transform.position;
-        halfStartingHeight = transform.localScale.y / 2;
+    }
+
+    public override void Setup(ShapeSO scriptable)
+    {
+        base.Setup(scriptable);
+        transform.rotation = Quaternion.Euler(0, 0, scriptable.rotation);
     }
 
     protected override IEnumerator Scale()
@@ -22,7 +25,7 @@ public class DirectionScaler : SmartScaler
             Vector3 newScale = transform.localScale;
             newScale.y = newScale.y * (1f + (verticalGrowthRate * Time.deltaTime));
             transform.localScale = newScale;
-            transform.position = startPosition + ((newScale.y/2 - 0.5f) * growDirection);
+            transform.position = startPosition + ((newScale.y/2 - 0.5f) * transform.up);
             yield return new WaitForFixedUpdate();
         }
         activelyScaling = false;
@@ -31,16 +34,11 @@ public class DirectionScaler : SmartScaler
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        Vector2 leftCorner = new Vector2(transform.position.x - transform.localScale.x/2, transform.position.y + transform.localScale.y/2 + 0.02f);
-        Vector2 rightCorner = new Vector2(transform.position.x + transform.localScale.x / 2, transform.position.y + transform.localScale.y/2 + 0.02f);
-        Debug.DrawRay(leftCorner, growDirection);
-        Debug.DrawRay(rightCorner, growDirection);
-        RaycastHit2D leftCornerRay = Physics2D.Raycast(leftCorner, growDirection, 0.1f, LayerMask.GetMask("Obstacles"));
-        RaycastHit2D rightCornerRay = Physics2D.Raycast(rightCorner, growDirection, 0.1f, LayerMask.GetMask("Obstacles"));
+        Vector2 growingEdge = startPosition + ((transform.localScale.y - 0.48f) * transform.up);
+        RaycastHit2D leftCornerRay = Physics2D.Raycast(growingEdge, -transform.right, transform.localScale.x/2, LayerMask.GetMask("Obstacles"));
+        RaycastHit2D rightCornerRay = Physics2D.Raycast(growingEdge, transform.right, transform.localScale.x/2, LayerMask.GetMask("Obstacles"));
         if (leftCornerRay.collider != null || rightCornerRay.collider != null)
         {
-            Debug.Log("Left Corner Hit: " + leftCornerRay.collider.name);
-            Debug.Log("Right Corner Hit: " + rightCornerRay.collider.name);
             verticalSpace = false;
         }
     }

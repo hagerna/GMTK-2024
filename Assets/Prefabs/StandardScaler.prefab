@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5448800828075592541}
+  - component: {fileID: 8596265670464873508}
   - component: {fileID: 8667064333838912020}
   - component: {fileID: 8720227595867945350}
   - component: {fileID: 7804534914329351168}
-  - component: {fileID: 8596265670464873508}
-  m_Layer: 0
-  m_Name: Square (1)
+  m_Layer: 6
+  m_Name: StandardScaler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,13 +28,29 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5994897387498890025}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.94, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8596265670464873508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5994897387498890025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f377941a69c4c8cb7325a17ac02658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  verticalGrowthRate: 0.05
+  horizontalGrowthRate: 0.05
+  verticalSpace: 1
+  horizontalSpace: 1
 --- !u!212 &8667064333838912020
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -158,20 +174,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
---- !u!114 &8596265670464873508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994897387498890025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f377941a69c4c8cb7325a17ac02658, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  verticalGrowthRate: 0.05
-  horizontalGrowthRate: 0.05
-  verticalSpace: 1
-  horizontalSpace: 1
+  m_Constraints: 7

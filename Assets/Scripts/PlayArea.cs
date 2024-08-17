@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 public class PlayArea : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]
-    GameObject selectedPiece;
+    Scaler[] ShapePrefabs;
+    [SerializeField]
+    ShapeSO selectedShape;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,24 @@ public class PlayArea : MonoBehaviour, IPointerClickHandler
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
         Vector2 clickPosition = FindAnyObjectByType<Camera>().ScreenToWorldPoint(eventData.position);
-        print("clicked position on the gameobject  is :" + clickPosition.x);
-        Instantiate(selectedPiece, clickPosition, Quaternion.identity);
+        if (ShapeWillFit(clickPosition))
+        {
+            Instantiate(ShapePrefabs[(int)selectedShape.scalerType], clickPosition, Quaternion.identity).Setup(selectedShape);
+        }
+    }
+
+    bool ShapeWillFit(Vector2 pos)
+    {
+        float width = selectedShape.width;
+        float height = selectedShape.height;
+        Vector2 topRight = new Vector2(pos.x + width / 2, pos.y + height / 2);
+        Vector2 botLeft = new Vector2(pos.x - width / 2, pos.y - height / 2);
+        Collider2D overlap = Physics2D.OverlapArea(topRight, botLeft, LayerMask.GetMask("Obstacles"));
+        if (overlap != null)
+        {
+            Debug.Log("Shape Cannot Fit There");
+            return false;
+        }
+        return true;
     }
 }

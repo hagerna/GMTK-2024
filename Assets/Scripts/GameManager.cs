@@ -6,10 +6,10 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    Scaler[] ActiveShapes;
+    List<Scaler> ActiveShapes;
     public static GameManager instance;
-    public float score, currency, lockInTimer, lockInDuration;
-    public UnityEvent Begin, Stop;
+    public float score, earnedCurrency, roundCurrency, lockInTimer, lockInDuration;
+    public UnityEvent Begin, LockIn, Stop;
 
     private void Awake()
     {
@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Scaler.LockedIn.AddListener(CheckAllShapes);
+        ActiveShapes = new List<Scaler>();
+        lockInDuration = 10f;
     }
 
     // Update is called once per frame
@@ -43,20 +45,29 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        StartCoroutine(LockIn());
+        StartCoroutine(TriggerLockIn());
     }
 
-    IEnumerator LockIn()
+    IEnumerator TriggerLockIn()
     {
+        LockIn.Invoke();
         Debug.Log("All Shapes Locked");
         lockInTimer = lockInDuration;
+        yield return new WaitForSeconds(0.5f);
         while (lockInTimer > 0)
         {
-            lockInTimer -= Time.deltaTime;
-            yield return new WaitForEndOfFrame();
+            lockInTimer -= 0.05f;
+            yield return new WaitForSeconds(0.05f);
         }
         Debug.Log("Round Complete");
+        lockInTimer = 0;
+        Stop.Invoke();
 
+    }
+
+    public void ShapePlaced(Scaler scaler)
+    {
+        ActiveShapes.Add(scaler);
     }
 
     public void OnBeginPressed()
@@ -72,7 +83,7 @@ public class GameManager : MonoBehaviour
                 score += val;
                 break;
             case ProductionType.Currency:
-                currency += val;
+                roundCurrency += val;
                 break;
             default:
                 break;
