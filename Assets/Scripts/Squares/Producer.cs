@@ -51,6 +51,8 @@ public abstract class Producer : MonoBehaviour
     {
         return transform.localScale.x * transform.localScale.y;
     }
+
+    protected ProductionType GetProdType() { return _type; }
 }
 
 public enum ProductionType

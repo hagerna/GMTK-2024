@@ -7,10 +7,11 @@ public class Scaler: Producer
 {
     public static UnityEvent LockedIn = new UnityEvent();
     [SerializeField]
+    Sprite Grow, Shrink;
+    [SerializeField]
+    SpriteRenderer Vertical, Horizontal;
     protected float verticalGrowthRate, horizontalGrowthRate;
-    [SerializeField]
     protected bool verticalSpace = true;
-    [SerializeField]
     protected bool horizontalSpace = true;
     protected bool activelyScaling = false;
 
@@ -27,25 +28,7 @@ public class Scaler: Producer
         verticalGrowthRate = scriptable.verticalGrowth;
         horizontalGrowthRate = scriptable.horizontalGrowth;
         GameManager.instance.ShapePlaced(this);
-
-        // Setup Appearance
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        if (verticalGrowthRate >= 0 && horizontalGrowthRate >= 0)
-        {
-            renderer.color = Constants.RED;
-        }
-        else if (verticalGrowthRate >= 0 || horizontalGrowthRate >= 0)
-        {
-            renderer.color = Constants.PURPLE;
-        }
-        else
-        {
-            renderer.color = Constants.BLUE;
-        }
-        if (scriptable.prodType == ProductionType.Currency)
-        {
-            renderer.color = Constants.GREEN;
-        }
+        UpdateAppearance();
     }
 
     protected void Begin()
@@ -79,6 +62,7 @@ public class Scaler: Producer
             if (newScale.y < 0.4f)
             {
                 newScale.y = 0.4f;
+                verticalSpace = false;
             }
             transform.localScale = newScale;
             yield return new WaitForFixedUpdate();
@@ -97,5 +81,60 @@ public class Scaler: Producer
     {
         horizontalSpace = false;
         verticalSpace = false;
+    }
+
+    private void SetBackgroundColor()
+    {
+        // Set Background
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        if (verticalGrowthRate >= 0 && horizontalGrowthRate >= 0)
+        {
+            renderer.color = Constants.RED;
+        }
+        else if (verticalGrowthRate >= 0 || horizontalGrowthRate >= 0)
+        {
+            renderer.color = Constants.PURPLE;
+        }
+        else
+        {
+            renderer.color = Constants.BLUE;
+        }
+        if (GetProdType() == ProductionType.Currency)
+        {
+            renderer.color = Constants.GREEN;
+        }
+    }
+
+    protected virtual void UpdateAppearance()
+    {
+        SetBackgroundColor();
+
+        // Set Vertical Arrows
+        if (verticalGrowthRate > 0)
+        {
+            Vertical.sprite = Grow;
+        }
+        else if (verticalGrowthRate < 0)
+        {
+            Vertical.sprite = Shrink;
+        }
+        else
+        {
+            Vertical.sprite = null;
+        }
+
+        // Set Horizontal Arrows
+        if (horizontalGrowthRate > 0)
+        {
+            Horizontal.sprite = Grow;
+        }
+        else if (horizontalGrowthRate < 0)
+        {
+            Horizontal.sprite = Shrink;
+        }
+        else
+        {
+            Horizontal.sprite = null;
+        }
     }
 }

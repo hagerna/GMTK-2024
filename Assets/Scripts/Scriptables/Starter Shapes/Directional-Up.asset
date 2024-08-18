@@ -10,15 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f715a67659a1a4753bac5eaa8b3a22d7, type: 3}
-  m_Name: Currency
+  m_Name: Directional-Up
   m_EditorClassIdentifier: 
-  prodType: 1
+  prodType: 0
   prodMultiplier: 1
   lockInMultiplier: 0
-  prodDelay: 2
+  prodDelay: 1
   width: 1
   height: 1
-  horizontalGrowth: 0
-  verticalGrowth: 0
-  scalerType: 0
+  horizontalGrowth: 0.05
+  verticalGrowth: 0.05
+  scalerType: 2
   rotation: 0
+  scalerPrefab: {fileID: -4804675293400129447, guid: eaa0ddfc1b1b8479d886e47724d539ab, type: 3}

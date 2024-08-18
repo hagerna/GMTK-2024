@@ -45,5 +45,10 @@ public class SmartScaler : Scaler
         {
             verticalSpace = false;
         }
-    } 
+    }
+
+    protected override void UpdateAppearance()
+    {
+        return;
+    }
 }

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     List<Scaler> ActiveShapes;
+
     public static GameManager instance;
     public float score, earnedCurrency, roundCurrency, lockInTimer, lockInDuration;
     public UnityEvent Begin, LockIn, Stop;
