@@ -10,7 +10,7 @@ public class Scaler: Producer
     Sprite Grow, Shrink;
     [SerializeField]
     SpriteRenderer Vertical, Horizontal;
-    protected float verticalGrowthRate, horizontalGrowthRate;
+    protected float verticalGrowth, horizontalGrowth;
     protected bool verticalSpace = true;
     protected bool horizontalSpace = true;
     protected bool activelyScaling = false;
@@ -25,8 +25,8 @@ public class Scaler: Producer
     {
         SetupProduction(scriptable);
         transform.localScale = new Vector2(scriptable.width, scriptable.height);
-        verticalGrowthRate = scriptable.verticalGrowth;
-        horizontalGrowthRate = scriptable.horizontalGrowth;
+        verticalGrowth = scriptable.verticalGrowth;
+        horizontalGrowth = scriptable.horizontalGrowth;
         GameManager.instance.ShapePlaced(this);
         UpdateAppearance();
     }
@@ -34,7 +34,9 @@ public class Scaler: Producer
     protected void Begin()
     {
         isProducing = true;
-        if (verticalGrowthRate != 0 && horizontalGrowthRate != 0)
+        Vertical.gameObject.SetActive(false);
+        Horizontal.gameObject.SetActive(false);
+        if (verticalGrowth != 0 && horizontalGrowth != 0)
         {
             StartCoroutine(Scale());
         }
@@ -52,8 +54,8 @@ public class Scaler: Producer
         while (verticalSpace && horizontalSpace)
         {
             Vector3 newScale = transform.localScale;
-            newScale.x = newScale.x * (1f + (horizontalGrowthRate * Time.deltaTime));
-            newScale.y = newScale.y * (1f + (verticalGrowthRate * Time.deltaTime));
+            newScale.x = newScale.x * (1f + (horizontalGrowth * Time.deltaTime));
+            newScale.y = newScale.y * (1f + (verticalGrowth * Time.deltaTime));
             if (newScale.x < 0.4f)
             {
                 newScale.x = 0.4f;
@@ -83,22 +85,11 @@ public class Scaler: Producer
         verticalSpace = false;
     }
 
-    private void SetBackgroundColor()
+    protected void SetBackgroundColor()
     {
         // Set Background
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        if (verticalGrowthRate >= 0 && horizontalGrowthRate >= 0)
-        {
-            renderer.color = Constants.RED;
-        }
-        else if (verticalGrowthRate >= 0 || horizontalGrowthRate >= 0)
-        {
-            renderer.color = Constants.PURPLE;
-        }
-        else
-        {
-            renderer.color = Constants.BLUE;
-        }
+        renderer.color = Constants.GetBackgroundColor(new Vector2(horizontalGrowth, verticalGrowth));
         if (GetProdType() == ProductionType.Currency)
         {
             renderer.color = Constants.GREEN;
@@ -107,14 +98,15 @@ public class Scaler: Producer
 
     protected virtual void UpdateAppearance()
     {
+        Debug.Log("Updating Appearance");
         SetBackgroundColor();
 
         // Set Vertical Arrows
-        if (verticalGrowthRate > 0)
+        if (verticalGrowth > 0)
         {
             Vertical.sprite = Grow;
         }
-        else if (verticalGrowthRate < 0)
+        else if (verticalGrowth < 0)
         {
             Vertical.sprite = Shrink;
         }
@@ -124,11 +116,11 @@ public class Scaler: Producer
         }
 
         // Set Horizontal Arrows
-        if (horizontalGrowthRate > 0)
+        if (horizontalGrowth > 0)
         {
             Horizontal.sprite = Grow;
         }
-        else if (horizontalGrowthRate < 0)
+        else if (horizontalGrowth < 0)
         {
             Horizontal.sprite = Shrink;
         }

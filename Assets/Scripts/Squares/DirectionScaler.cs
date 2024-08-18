@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DirectionScaler : SmartScaler
 {
+    [SerializeField]
+    GameObject _directionArrow;
     Vector3 startPosition;
 
     private void Awake()
@@ -20,10 +22,11 @@ public class DirectionScaler : SmartScaler
     protected override IEnumerator Scale()
     {
         activelyScaling = true;
+        _directionArrow.SetActive(false);
         while (verticalSpace)
         {
             Vector3 newScale = transform.localScale;
-            newScale.y = newScale.y * (1f + (verticalGrowthRate * Time.deltaTime));
+            newScale.y = newScale.y * (1f + (verticalGrowth * Time.deltaTime));
             transform.localScale = newScale;
             transform.position = startPosition + ((newScale.y/2 - 0.5f) * transform.up);
             yield return new WaitForFixedUpdate();
@@ -41,5 +44,10 @@ public class DirectionScaler : SmartScaler
         {
             verticalSpace = false;
         }
+    }
+
+    protected override void UpdateAppearance()
+    {
+        SetBackgroundColor();
     }
 }

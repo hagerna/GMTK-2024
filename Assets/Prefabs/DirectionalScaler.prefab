@@ -132,10 +132,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9753d23491e26430aa608fe323da6a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalGrowthRate: 0.05
-  horizontalGrowthRate: 0
-  verticalSpace: 1
-  horizontalSpace: 0
+  Grow: {fileID: 0}
+  Shrink: {fileID: 0}
+  Vertical: {fileID: 0}
+  Horizontal: {fileID: 0}
+  _directionArrow: {fileID: 2254856447943574251}
 --- !u!212 &8667064333838912020
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -178,7 +179,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.9433962, g: 0.33374867, b: 0.33374867, a: 1}
+  m_Color: {r: 0.16862746, g: 0.69411767, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

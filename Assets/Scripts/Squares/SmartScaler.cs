@@ -13,11 +13,11 @@ public class SmartScaler : Scaler
             Vector3 newScale = transform.localScale;
             if (horizontalSpace)
             {
-                newScale.x = newScale.x * (1f + (horizontalGrowthRate * Time.deltaTime));
+                newScale.x = newScale.x * (1f + (horizontalGrowth * Time.deltaTime));
             }
             if (verticalSpace)
             {
-                newScale.y = newScale.y * (1f + (verticalGrowthRate * Time.deltaTime));
+                newScale.y = newScale.y * (1f + (verticalGrowth * Time.deltaTime));
             }
             transform.localScale = newScale;
             yield return new WaitForFixedUpdate();
@@ -45,10 +45,5 @@ public class SmartScaler : Scaler
         {
             verticalSpace = false;
         }
-    }
-
-    protected override void UpdateAppearance()
-    {
-        return;
     }
 }

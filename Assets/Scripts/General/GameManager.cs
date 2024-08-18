@@ -31,12 +31,6 @@ public class GameManager : MonoBehaviour
         lockInDuration = 10f;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void CheckAllShapes()
     {
         foreach (Scaler shape in ActiveShapes)
@@ -73,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void OnBeginPressed()
     {
+
         Begin.Invoke();
     }
 
