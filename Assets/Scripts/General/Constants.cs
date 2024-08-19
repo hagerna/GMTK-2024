@@ -10,6 +10,7 @@ public static class Constants
     public static Color PURPLE = new Color(149 * RGB, 72 * RGB, 217 * RGB); //Hex: #9548d9
     public static Color GREEN = new Color(63 * RGB, 194 * RGB, 56 * RGB); //Hex: #3fc238
     public static Color GRAY = new Color(117 * RGB, 117 * RGB, 117 * RGB); //Hex: #757575
+    public static Color ORANGE = new Color(232 * RGB, 140 * RGB, 28 * RGB); //Hex: #ff9a02
 
     public static Color GetBackgroundColor(Vector2 growth)
     {

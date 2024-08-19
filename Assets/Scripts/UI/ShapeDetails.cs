@@ -19,6 +19,10 @@ public class ShapeDetails : MonoBehaviour
 
     void UpdateDisplay(ShapeUI shapeUI)
     {
+        if (shapeUI == null)
+        {
+            return;
+        }
         DetailsPanel.SetActive(true);
         shape = shapeUI;
         ShapeSO shapeData = shape.Shape;
@@ -33,6 +37,7 @@ public class ShapeDetails : MonoBehaviour
     public void CloseDetails()
     {
         DetailsPanel.SetActive(false);
+        shape.Deselect(null);
     }
 
     public void Remove()

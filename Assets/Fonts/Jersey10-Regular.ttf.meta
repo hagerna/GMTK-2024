@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: fa4e6fb814ff440338e32a4b1817c8bb
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Jersey 10
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3b638c0f080fa46e69d9694fd452b6c9, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

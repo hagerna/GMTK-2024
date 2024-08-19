@@ -7,12 +7,12 @@ public class LockinCountdown: MonoBehaviour
 {
     TextMeshProUGUI text;
     bool LockedIn = false;
-    GameManager gm;
+    RunManager rm;
     // Start is called before the first frame update
     void Start()
     {
-        gm = GameManager.instance;
-        gm.LockIn.AddListener(ShowCountdown);
+        rm = RunManager.instance;
+        ShapesManager.AllShapesLocked.AddListener(ShowCountdown);
         text = GetComponent<TextMeshProUGUI>();
         text.text = "";
     }
@@ -22,12 +22,18 @@ public class LockinCountdown: MonoBehaviour
         LockedIn = true;
     }
 
+    public void HideCountdown()
+    {
+        LockedIn = false;
+        text.text = "";
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (LockedIn)
         {
-            text.text = gm.lockInTimer.ToString("0.00");
+            text.text = rm.GetLockInTime().ToString("0.00");
         }
     }
 }

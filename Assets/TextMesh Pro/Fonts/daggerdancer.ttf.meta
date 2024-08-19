@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2cd8515ae51b9476a9155a61093127f9
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Dagger Dancer
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 61a852a97bb20458a996bab45e66a3bc, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

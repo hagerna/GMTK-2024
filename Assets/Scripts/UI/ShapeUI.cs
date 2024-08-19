@@ -105,6 +105,10 @@ public class ShapeUI : MonoBehaviour
         if (selected != this)
         {
             _selectionBorder.SetActive(false);
+            if (_activeShape)
+            {
+                _activeShape.Deselect();
+            }
         }
     }
 
@@ -112,6 +116,10 @@ public class ShapeUI : MonoBehaviour
     {
         Select.Invoke(this);
         _selectionBorder.SetActive(true);
+        if (_activeShape != null)
+        {
+            _activeShape.ShapeSelected();
+        }
     }
 
     public bool ShapeWillFit(Vector2 pos)
@@ -153,5 +161,10 @@ public class ShapeUI : MonoBehaviour
     public bool IsShapeActive()
     {
         return _activeShape != null;
+    }
+
+    public bool IsShapeLocked()
+    {
+        return !_activeShape.IsScaling();
     }
 }

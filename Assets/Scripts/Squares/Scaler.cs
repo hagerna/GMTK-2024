@@ -10,6 +10,8 @@ public class Scaler: Producer
     Sprite Grow, Shrink;
     [SerializeField]
     SpriteRenderer Vertical, Horizontal;
+    [SerializeField]
+    GameObject _selectBorder;
     protected float verticalGrowth, horizontalGrowth;
     protected bool verticalSpace = true;
     protected bool horizontalSpace = true;
@@ -17,8 +19,9 @@ public class Scaler: Producer
 
     private void Start()
     {
-        GameManager.instance.Begin.AddListener(Begin);
-        GameManager.instance.Stop.AddListener(StopProduction);
+        RunManager.Begin.AddListener(Begin);
+        RunManager.Stop.AddListener(StopProduction);
+        ShapeSelected();
     }
 
     public virtual void Setup(ShapeSO scriptable)
@@ -27,22 +30,28 @@ public class Scaler: Producer
         transform.localScale = new Vector2(scriptable.width, scriptable.height);
         verticalGrowth = scriptable.verticalGrowth;
         horizontalGrowth = scriptable.horizontalGrowth;
-        GameManager.instance.ShapePlaced(this);
         UpdateAppearance();
     }
 
     protected void Begin()
     {
         isProducing = true;
-        Vertical.gameObject.SetActive(false);
-        Horizontal.gameObject.SetActive(false);
+        if (Vertical != null)
+        {
+            Vertical.gameObject.SetActive(false);
+        }
+        if (Horizontal != null)
+        {
+            Horizontal.gameObject.SetActive(false);
+        }
         if (verticalGrowth != 0 && horizontalGrowth != 0)
         {
             StartCoroutine(Scale());
         }
         else
         {
-            CanNoLongerGrow();
+            // Give Buffer time so Lock-In doesn't start immediately
+            Invoke("CanNoLongerGrow", 0.5f);
         }
     }
 
@@ -98,7 +107,6 @@ public class Scaler: Producer
 
     protected virtual void UpdateAppearance()
     {
-        Debug.Log("Updating Appearance");
         SetBackgroundColor();
 
         // Set Vertical Arrows
@@ -128,5 +136,15 @@ public class Scaler: Producer
         {
             Horizontal.sprite = null;
         }
+    }
+
+    public void Deselect()
+    {
+        _selectBorder.SetActive(false);
+    }
+
+    public void ShapeSelected()
+    {
+        _selectBorder.SetActive(true);
     }
 }

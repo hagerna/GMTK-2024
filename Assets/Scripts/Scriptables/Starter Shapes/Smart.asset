@@ -18,8 +18,8 @@ MonoBehaviour:
   prodDelay: 1
   width: 1
   height: 1
-  horizontalGrowth: 0.05
-  verticalGrowth: 0.05
+  horizontalGrowth: 0.1
+  verticalGrowth: 0.1
   scalerType: 1
   rotation: 0
   scalerPrefab: {fileID: -4865897148291933722, guid: c9c7c9d2d69af4acea6356aada224886, type: 3}

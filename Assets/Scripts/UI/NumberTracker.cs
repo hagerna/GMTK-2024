@@ -8,12 +8,12 @@ public class NumberTracker : MonoBehaviour
     [SerializeField]
     ProductionType displayType;
     TextMeshProUGUI text;
-    GameManager gm;
+    RunManager rm;
     // Start is called before the first frame update
     void Start()
     {
         text = GetComponent<TextMeshProUGUI>();
-        gm = GameManager.instance;
+        rm = RunManager.instance;
     }
 
     // Update is called once per frame
@@ -22,10 +22,10 @@ public class NumberTracker : MonoBehaviour
         switch (displayType)
         {
             case ProductionType.Score:
-                text.text = "Score: " + gm.score.ToString("0");
+                text.text = "Score: " + rm.GetRoundScore().ToString("0");
                 break;
             case ProductionType.Currency:
-                text.text = "Currency: " + gm.roundCurrency.ToString("0");
+                text.text = "Currency: " + rm.GetRoundCurrency().ToString("0");
                 break;
 
 

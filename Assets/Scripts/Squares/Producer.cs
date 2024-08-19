@@ -10,6 +10,7 @@ public abstract class Producer : MonoBehaviour
     protected float _prodMultiplier = 1f;
     protected float _lockInMultiplier = 0f;
     protected bool isProducing = false;
+    RunManager rm;
 
     protected void SetupProduction(ShapeSO scriptable)
     {
@@ -17,6 +18,7 @@ public abstract class Producer : MonoBehaviour
         _prodMultiplier = scriptable.prodMultiplier;
         _lockInMultiplier = scriptable.lockInMultiplier;
         _prodDelay = scriptable.prodDelay;
+        rm = RunManager.instance;
     }
 
     // Update is called once per frame
@@ -44,7 +46,7 @@ public abstract class Producer : MonoBehaviour
 
     public virtual void Produce()
     {
-        GameManager.instance.AddProduction(_type, _prodMultiplier * getArea());
+        rm.AddProduction(_type, _prodMultiplier * getArea());
     }
 
     public float getArea()

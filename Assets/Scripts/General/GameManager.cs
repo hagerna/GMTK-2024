@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    List<Scaler> ActiveShapes;
-
     public static GameManager instance;
-    public float score, earnedCurrency, roundCurrency, lockInTimer, lockInDuration;
-    public UnityEvent Begin, LockIn, Stop;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -26,64 +23,51 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Scaler.LockedIn.AddListener(CheckAllShapes);
-        ActiveShapes = new List<Scaler>();
-        lockInDuration = 10f;
+        RunManager.Begin.AddListener(HandleBegin);
+        RunManager.Stop.AddListener(HandleStop);
+        ShapesManager.AllShapesLocked.AddListener(IncreaseTempo);
+        AudioManager.instance.Play("Menu Music");
     }
 
-    void CheckAllShapes()
+    private void HandleBegin()
     {
-        foreach (Scaler shape in ActiveShapes)
-        {
-            if (shape.IsScaling())
-            {
-                return;
-            }
-        }
-        StartCoroutine(TriggerLockIn());
+        AudioManager.instance.Stop("Menu Music");
+        // Add Begin Sound Effect
+        AudioManager.instance.ChangePitch("Round Music", 1f);
+        AudioManager.instance.Play("Round Music");
     }
 
-    IEnumerator TriggerLockIn()
+    private void HandleStop()
     {
-        LockIn.Invoke();
-        Debug.Log("All Shapes Locked");
-        lockInTimer = lockInDuration;
-        yield return new WaitForSeconds(0.5f);
-        while (lockInTimer > 0)
-        {
-            lockInTimer -= 0.05f;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Debug.Log("Round Complete");
-        lockInTimer = 0;
-        Stop.Invoke();
-
+        // Add End Sound Effect
+        AudioManager.instance.Stop("Round Music");
+        AudioManager.instance.Play("Menu Music");
     }
 
-    public void ShapePlaced(Scaler scaler)
+    private void IncreaseTempo()
     {
-        ActiveShapes.Add(scaler);
+        AudioManager.instance.ChangePitch("Round Music", 1.25f);
     }
 
-    public void OnBeginPressed()
+    public void PlayTutorial()
     {
-
-        Begin.Invoke();
+        SceneManager.LoadScene("Tutorial");
+        RunManager.instance.LoadTutorial();
     }
 
-    public void AddProduction(ProductionType type, float val)
+    public void Play()
     {
-        switch (type)
-        {
-            case ProductionType.Score:
-                score += val;
-                break;
-            case ProductionType.Currency:
-                roundCurrency += val;
-                break;
-            default:
-                break;
-        }
-        score += val;
+        SceneManager.LoadScene("Base");
+        RunManager.instance.LoadNewRun();
+    }
+
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
+    public void Exit()
+    {
+        Application.Quit(0);
     }
 }
