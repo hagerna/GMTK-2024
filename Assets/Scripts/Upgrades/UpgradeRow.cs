@@ -14,10 +14,14 @@ public class UpgradeRow : MonoBehaviour
     float refreshCost = 10;
     List<UpgradeUI> availableUpgrades = new List<UpgradeUI>();
     RunManager rm;
+    float width;
+
     // Start is called before the first frame update
     void Start()
     {
         rm = RunManager.instance;
+        width = GetComponent<RectTransform>().sizeDelta.x;
+        width = Mathf.Abs(width) - 90;
         Refresh();
     }
 
@@ -28,13 +32,13 @@ public class UpgradeRow : MonoBehaviour
             Destroy(upgrade.gameObject);
         }
         availableUpgrades.Clear();
-        int offsetX = 60;
+        int offsetX = 30;
         for (int i = 0; i < 6; i++)
         {
             UpgradeUI temp = Instantiate(UpgradeUIPrefab, StartingPoint.position + new Vector3(offsetX, 0, 0), Quaternion.identity, transform);
             temp.SetUpgrade(Upgrades[Random.Range(0, Upgrades.Length)], 1);
             availableUpgrades.Add(temp);
-            offsetX += 145;
+            offsetX += Mathf.FloorToInt(width/12f);
         }
     }
 

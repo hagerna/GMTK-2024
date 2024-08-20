@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class UpgradeDetails : MonoBehaviour
 {
     [SerializeField]
-    Image upgradeVisual;
+    Image upgradeVisual, Vertical, Horizontal, Directional;
+    [SerializeField]
+    Sprite Grow, Shrink;
     [SerializeField]
     TextMeshProUGUI upgradeName, description, modifier, cost, helpMessage;
     UpgradeUI selectedUpgrade;
@@ -32,18 +34,45 @@ public class UpgradeDetails : MonoBehaviour
         ShowDetails();
         selectedUpgrade = selected;
         upgradeName.text = string.Format("{0}", selectedUpgrade.GetName());
-        description.text = string.Format("{0}", selectedUpgrade.GetDescription());
-        cost.text = string.Format("{0}", selectedUpgrade.GetCost().ToString("0"));
         upgradeVisual.sprite = selectedUpgrade.GetSprite();
-        float displayModifier = (selectedUpgrade.GetModifier() - 1) * 100;
-        if (displayModifier > 0)
+        if (selectedUpgrade.GetData().Class != UpgradeClass.NewShape)
         {
-            modifier.text = string.Format("Increase by {0}%", Mathf.Abs(displayModifier));
+            description.text = string.Format("{0}", selectedUpgrade.GetDescription());
+            float displayModifier = (selectedUpgrade.GetModifier() - 1) * 100;
+            if (displayModifier > 0)
+            {
+                modifier.text = string.Format("Increase by {0}%", Mathf.Abs(displayModifier));
+            }
+            else if (displayModifier < 0)
+            {
+                modifier.text = string.Format("Decrease by {0}%", Mathf.Abs(displayModifier));
+            }
         }
         else
         {
-            modifier.text = string.Format("Decrease by {0}%", Mathf.Abs(displayModifier));
+            ShapeSO shape = selected.GetData().NewShape;
+            upgradeVisual.color = Constants.GetBackgroundColor(new Vector2(shape.horizontalGrowth, shape.verticalGrowth));
+            if (shape.prodType == ProductionType.Currency)
+            {
+                upgradeVisual.color = Constants.GREEN;
+            }
+            HandleArrows(shape);
+            float max = Mathf.Max(shape.width, shape.height);
+            upgradeVisual.GetComponent<RectTransform>().sizeDelta = new Vector2(shape.width / max, shape.height / max) * 250f;
+            string descriptionText = string.Format("A {0} Scaler with multiplier {1}. Base size of {2} x {3}. Growth is {4}/sec x {5}/sec. ",
+                shape.scalerType.ToString(), shape.prodMultiplier.ToString("0.00"), shape.width, shape.height, shape.verticalGrowth * 10f, shape.horizontalGrowth * 10f);
+            if (shape.ModifierTags.Count > 0)
+            {
+                descriptionText += string.Format("Modifiers: {0}", string.Join(",", shape.ModifierTags));
+            }
+            else
+            {
+                descriptionText += "Modifiers: None";
+            }
+            description.text = descriptionText;
+            modifier.text = "";
         }
+        cost.text = string.Format("{0}", selectedUpgrade.GetCost().ToString("0"));
     }
 
     private void HideDetails()
@@ -60,6 +89,9 @@ public class UpgradeDetails : MonoBehaviour
         upgradeVisual.gameObject.SetActive(true);
         description.gameObject.SetActive(true);
         modifier.gameObject.SetActive(true);
+        Vertical.gameObject.SetActive(false);
+        Horizontal.gameObject.SetActive(false);
+        Directional.gameObject.SetActive(false);
     }
 
     public void OnPurchasePressed()
@@ -75,5 +107,39 @@ public class UpgradeDetails : MonoBehaviour
         helpMessage.text = message;
         yield return new WaitForSeconds(5f);
         helpMessage.text = "";
+    }
+
+    private void HandleArrows(ShapeSO shape)
+    {
+        if (shape.scalerType == ScalerType.Directional)
+        {
+            Directional.gameObject.SetActive(true);
+            Directional.transform.rotation = Quaternion.Euler(0, 0, shape.rotation);
+            return;
+        }
+
+        // Set Vertical Arrows
+        if (shape.verticalGrowth > 0)
+        {
+            Vertical.gameObject.SetActive(true);
+            Vertical.sprite = Grow;
+        }
+        else if (shape.verticalGrowth < 0)
+        {
+            Vertical.gameObject.SetActive(true);
+            Vertical.sprite = Shrink;
+        }
+
+        // Set Horizontal Arrows
+        if (shape.horizontalGrowth > 0)
+        {
+            Horizontal.gameObject.SetActive(true);
+            Horizontal.sprite = Grow;
+        }
+        else if (shape.horizontalGrowth < 0)
+        {
+            Horizontal.gameObject.SetActive(true);
+            Horizontal.sprite = Shrink;
+        }
     }
 }

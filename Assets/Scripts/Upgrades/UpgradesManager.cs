@@ -42,16 +42,22 @@ public class UpgradesManager : MonoBehaviour
         else
         {
             UpgradeSO data = upgrade.GetData();
-            if (data.Class == UpgradeClass.NewShape)
-            {
-                ShapesManager.instance.AddShape(data.NewShape);
-                rm.MakePurchase(upgrade.GetCost());
-            }
-            else
+            if (data.Class == UpgradeClass.UpgradeShape || data.Class == UpgradeClass.Modifier)
             {
                 purchasingUpgrade = upgrade;
                 ShapeUI.Select.AddListener(HandleSelection);
                 blockUpgrades.SetActive(true);
+            }
+            else if (data.Class == UpgradeClass.GeneralUpgrade)
+            {
+                ApplyGeneralUgrade(data);
+                upgrade.ShowPurchase();
+
+            }
+            else if (data.Class == UpgradeClass.NewShape)
+            {
+                ShapesManager.instance.AddShape(data.NewShape);
+                upgrade.ShowPurchase();
             }
             return true;
         }
@@ -78,7 +84,7 @@ public class UpgradesManager : MonoBehaviour
 
     private void ApplyUpgradeToShape(UpgradeSO upgrade, ShapeSO shape)
     {
-        if (upgrade.Class == UpgradeClass.Upgrade)
+        if (upgrade.Class == UpgradeClass.UpgradeShape)
         {
             switch (upgrade.Type)
             {
@@ -93,14 +99,42 @@ public class UpgradesManager : MonoBehaviour
                     shape.height *= upgrade.Modifier;
                     break;
                 case UpgradeType.VerticalGrowth:
-                    shape.verticalGrowth *= upgrade.Modifier;
+                    if (shape.verticalGrowth == 0)
+                    {
+                        shape.verticalGrowth = upgrade.Modifier - 1;
+                    }
+                    else
+                    {
+                        shape.verticalGrowth = upgrade.Modifier;
+                    }
                     break;
                 case UpgradeType.HorizontalGrowth:
-                    shape.horizontalGrowth *= upgrade.Modifier;
+                    if (shape.horizontalGrowth == 0)
+                    {
+                        shape.horizontalGrowth = upgrade.Modifier - 1;
+                    }
+                    else
+                    {
+                        shape.horizontalGrowth *= upgrade.Modifier;
+                    }
                     break;
                 case UpgradeType.Growth:
-                    shape.verticalGrowth *= upgrade.Modifier;
-                    shape.horizontalGrowth *= upgrade.Modifier;
+                    if (shape.verticalGrowth == 0)
+                    {
+                        shape.verticalGrowth = upgrade.Modifier - 1;
+                    }
+                    else
+                    {
+                        shape.verticalGrowth = upgrade.Modifier;
+                    }
+                    if (shape.horizontalGrowth == 0)
+                    {
+                        shape.horizontalGrowth = upgrade.Modifier - 1;
+                    }
+                    else
+                    {
+                        shape.horizontalGrowth *= upgrade.Modifier;
+                    }
                     break;
                 case UpgradeType.ProductionMultiplier:
                     shape.prodMultiplier *= upgrade.Modifier;
@@ -110,6 +144,19 @@ public class UpgradesManager : MonoBehaviour
                     break;
 
             }
+        }
+        else if (upgrade.Class == UpgradeClass.Modifier)
+        {
+            shape.ModifierTags.Add(upgrade.UpgradeName);
+        }
+    }
+
+    private void ApplyGeneralUgrade(UpgradeSO upgrade)
+    {
+        switch (upgrade.Type)
+        {
+            case UpgradeType.Width:
+                break;
         }
     }
 }

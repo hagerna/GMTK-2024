@@ -315,6 +315,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2210c59bd794e404eba2e8a32191b24c, type: 2}
   CurrencyShapes:
   - {fileID: 11400000, guid: 946f769494277455a8aeb3fe429a8d64, type: 2}
+  - {fileID: 11400000, guid: 358bffcb4dd6f4a10859310d33e75a0e, type: 2}
+  - {fileID: 11400000, guid: 323903cbd4ee04e1d91a0ddace59fb7c, type: 2}
+  - {fileID: 11400000, guid: f21b04c80db8841cdb4723a8a1cdb260, type: 2}
   Levels:
   - {fileID: 11400000, guid: 44bdfce7f23014f05be2a336986909fa, type: 2}
   - {fileID: 11400000, guid: edb1a561803f7418eab3363d6b94c96c, type: 2}

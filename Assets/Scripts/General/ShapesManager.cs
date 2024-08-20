@@ -10,6 +10,7 @@ public class ShapesManager : MonoBehaviour
     public List<ShapeUI> ShapesUI { get; private set; }
     [SerializeField]
     ShapeUI prefab;
+    float width;
 
     public static ShapesManager instance;
 
@@ -37,6 +38,13 @@ public class ShapesManager : MonoBehaviour
         {
             NewRun();
         }
+        width = GetComponent<RectTransform>().sizeDelta.x;
+        if (width == 0)
+        {
+            width = 1100;
+        }
+        width = Mathf.Abs(width) - 320;
+        Debug.Log("Width: " + width);
     }
 
     public void TutorialRun()
@@ -65,13 +73,13 @@ public class ShapesManager : MonoBehaviour
     public void LoadUI()
     {
         ShapesUI = new List<ShapeUI>();
-        int xOffset = 1920/2 - (100 * Shapes.Count);
+        int xOffset = 160;
         foreach (ShapeSO shape in Shapes)
         {
-            ShapeUI shapeUI = Instantiate(prefab, new Vector2(xOffset, 100), Quaternion.identity, transform);
+            ShapeUI shapeUI = Instantiate(prefab, new Vector2(xOffset, 60), Quaternion.identity, transform);
             shapeUI.SetShape(shape);
             ShapesUI.Add(shapeUI);
-            xOffset += 250;
+            xOffset += 780/Shapes.Count;
         }
     }
 
@@ -110,6 +118,10 @@ public class ShapesManager : MonoBehaviour
     public void AddShape(ShapeSO shape)
     {
         Shapes.Add(ShapeSO.Copy(shape));
+        foreach(ShapeUI shapeUI in ShapesUI)
+        {
+            Destroy(shapeUI.gameObject);
+        }
         LoadUI();
     }
 }

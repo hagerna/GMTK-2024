@@ -25,12 +25,14 @@ public enum UpgradeType
     Growth,
     ProductionMultiplier,
     ProductionDelay,
-    LockInDuration
+    LockInDuration,
+    NewShape
 }
 
 public enum UpgradeClass
 {
-    Upgrade,
+    UpgradeShape,
+    GeneralUpgrade,
     Modifier,
-    NewShape,
+    NewShape
 }

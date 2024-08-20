@@ -8,7 +8,7 @@ public class ShapeSO : ScriptableObject
     // Producer
     public ProductionType prodType;
     public float prodMultiplier, lockInMultiplier, prodDelay = 1f;
-    // + Modifier List
+    public List<string> ModifierTags = new List<string>();
 
     // Scaler
     public float width, height = 1f;

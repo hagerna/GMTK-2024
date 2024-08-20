@@ -36,7 +36,14 @@ public class ShapeDetails : MonoBehaviour
         scoreMult.text = string.Format("Score Multiplier: {0}", shapeData.prodMultiplier.ToString("0.00"));
         size.text = string.Format("Size: {0} x {1}", shapeData.width, shapeData.height);
         growth.text = string.Format("Growth: {0}/sec x {1}/sec", shapeData.verticalGrowth * 10f, shapeData.horizontalGrowth * 10f);
-        modifiers.text = "Modifiers: None";
+        if (shapeData.ModifierTags.Count == 0)
+        {
+            modifiers.text = "Modifiers: None";
+        }
+        else
+        {
+            modifiers.text = string.Format("Modifiers: {0}", string.Join(",", shapeData.ModifierTags));
+        }
 
     }
 

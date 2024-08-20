@@ -24,6 +24,17 @@ public class UpgradeUI : MonoBehaviour
     {
         upgrade = baseUpgrade;
         upgradeSprite.sprite = upgrade.Sprite;
+        if (baseUpgrade.Class == UpgradeClass.NewShape)
+        {
+            ShapeSO shape = baseUpgrade.NewShape;
+            upgradeSprite.color = Constants.GetBackgroundColor(new Vector2(shape.horizontalGrowth, shape.verticalGrowth));
+            if (shape.prodType == ProductionType.Currency)
+            {
+                upgradeSprite.color = Constants.GREEN;
+            }
+            float max = Mathf.Max(shape.width, shape.height);
+            upgradeSprite.GetComponent<RectTransform>().sizeDelta = new Vector2(shape.width/max, shape.height/max) * 120f;
+        }
         costMultiplier = priceModifier;
         costText.text = GetCost().ToString();
     }
@@ -46,8 +57,8 @@ public class UpgradeUI : MonoBehaviour
     {
         purchased = true;
         purchaseCover.SetActive(true);
+        UpgradeSelected.Invoke(null);
     }
-
 
     public string GetName() { return upgrade.UpgradeName; }
     public string GetDescription() { return upgrade.Description; }
@@ -55,4 +66,5 @@ public class UpgradeUI : MonoBehaviour
     public float GetModifier() { return upgrade.Modifier; }
     public float GetCost() { return upgrade.Cost * costMultiplier; }
     public UpgradeSO GetData() { return upgrade; }
+    public bool IsPurchased() { return purchased; }
 }

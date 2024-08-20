@@ -8,7 +8,7 @@ public class Results : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI header, target, roundScore, roundCurrency, totalCurrency;
     [SerializeField]
-    GameObject resultsPopup, storeButton, endRunButton, tryAgainButton, gameOverButton, upgradesScreen;
+    GameObject resultsPopup, storeButton, endRunButton, tryAgainButton, gameOverButton, upgradesScreen, victoryScreen;
     RunManager rm;
 
     private void Start()
@@ -30,8 +30,15 @@ public class Results : MonoBehaviour
             header.color = Constants.GREEN;
             roundCurrency.text = string.Format("Currency Earned: {0}", rm.GetRoundCurrency().ToString("0"));
             totalCurrency.text = string.Format("Currency Total: {0}", rm.GetTotalCurrency().ToString("0"));
-            storeButton.SetActive(true);
-            endRunButton.SetActive(true);
+            if (rm.GetLevel() == 6)
+            {
+                victoryScreen.SetActive(true);
+            }
+            else
+            {
+                storeButton.SetActive(true);
+                endRunButton.SetActive(true);
+            }
         }
         else
         {

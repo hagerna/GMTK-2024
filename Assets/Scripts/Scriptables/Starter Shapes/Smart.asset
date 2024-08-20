@@ -16,6 +16,8 @@ MonoBehaviour:
   prodMultiplier: 1
   lockInMultiplier: 0
   prodDelay: 1
+  ModifierTags:
+  - Smart
   width: 1
   height: 1
   horizontalGrowth: 0.1
