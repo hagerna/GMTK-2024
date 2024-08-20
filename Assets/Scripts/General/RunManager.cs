@@ -10,8 +10,9 @@ public class RunManager : MonoBehaviour
     public static UnityEvent Stop = new UnityEvent();
     private float score, roundCurrency, earnedCurrency, lockInTimer, lockInDuration;
     private int _level, _attempts;
-    private float[] _targetScores = new float[] { 1000f, 1000f, 1500f, 2500f, 4000f, 6000f, 8000f };
+    private float[] _targetScores = new float[] { 1000f, 1500f, 2500f, 4000f, 6000f, 8000f, 12500f };
     private LevelSO[] _currentRunLevels;
+    public bool isTutorial { get; private set; }
 
     public static RunManager instance;
 
@@ -47,15 +48,23 @@ public class RunManager : MonoBehaviour
         _level = 0;
         lockInDuration = 10f;
         LoadLevel.Invoke(_level, _currentRunLevels[_level]);
+        isTutorial = true;
     }
 
     public void LoadNewRun()
     {
         _currentRunLevels = Generator.instance.GetRunLevels();
         ResetRound();
-        _level = 1;
+        _level = 0;
         _attempts = 3;
         lockInDuration = 10f;
+        LoadLevel.Invoke(_level, _currentRunLevels[_level]);
+        isTutorial = false;
+    }
+
+    public void LoadNextLevel()
+    {
+        ResetRound();
         LoadLevel.Invoke(_level, _currentRunLevels[_level]);
     }
 
@@ -81,15 +90,15 @@ public class RunManager : MonoBehaviour
     {
         if (score > GetTargetScore())
         {
-            Debug.Log("Round Passed");
             earnedCurrency += roundCurrency;
+            Stop.Invoke();
+            _level++;
         }
         else
         {
             _attempts--;
-            Debug.Log("Round Failed");
+            Stop.Invoke();
         }
-        Stop.Invoke();
     }
 
     public void AddProduction(ProductionType type, float val)
@@ -117,6 +126,28 @@ public class RunManager : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    public bool CheckPurchase(float cost)
+    {
+        if (earnedCurrency > cost)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void MakePurchase(float cost)
+    {
+        if (CheckPurchase(cost))
+        {
+            Debug.Log("Made Purchase For " + cost);
+            earnedCurrency -= cost;
+        }
+        else
+        {
+            Debug.LogError("Attempted to make purchase without checking cost.");
         }
     }
 

@@ -18,4 +18,9 @@ public class MenuScreen : MonoBehaviour
     {
         GameManager.instance.Exit();
     }
+
+    public void CheckboxSelected(GameObject checkMark)
+    {
+        Generator.instance.ToggleRandomLoadout(checkMark);
+    }
 }

@@ -22,8 +22,7 @@ public class SmartScaler : Scaler
             transform.localScale = newScale;
             yield return new WaitForFixedUpdate();
         }
-        activelyScaling = false;
-        LockedIn.Invoke();
+        CanNoLongerGrow();
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)

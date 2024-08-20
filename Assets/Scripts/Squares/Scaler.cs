@@ -11,7 +11,9 @@ public class Scaler: Producer
     [SerializeField]
     SpriteRenderer Vertical, Horizontal;
     [SerializeField]
-    GameObject _selectBorder;
+    GameObject _selectBorder, _lockPrefab;
+    GameObject _lockInstance;
+
     protected float verticalGrowth, horizontalGrowth;
     protected bool verticalSpace = true;
     protected bool horizontalSpace = true;
@@ -85,6 +87,17 @@ public class Scaler: Producer
     {
         activelyScaling = false;
         LockedIn.Invoke();
+        _lockInstance = Instantiate(_lockPrefab, transform.position, Quaternion.identity);
+        float size = Mathf.Min(transform.localScale.x, transform.localScale.y);
+        _lockInstance.transform.localScale *= size;
+    }
+
+    private void OnDestroy()
+    {
+        if (_lockInstance != null)
+        {
+            Destroy(_lockInstance);
+        }
     }
 
 

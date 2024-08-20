@@ -32,6 +32,11 @@ public class ShapeUI : MonoBehaviour
         _rectTransform = GetComponent<RectTransform>();
         _image = GetComponent<Image>();
         Shape = shapeSO;
+        Refresh();
+    }
+
+    public void Refresh()
+    {
         SetScale();
         SetBackgroundColor();
         SetUI();
@@ -147,6 +152,8 @@ public class ShapeUI : MonoBehaviour
             Horizontal.gameObject.SetActive(false);
             Directional.gameObject.SetActive(false);
             _placementIndicator.SetActive(true);
+            float size = Mathf.Min(transform.localScale.x, transform.localScale.y);
+            _placementIndicator.transform.localScale *= size;
         }
     }
 
@@ -158,13 +165,8 @@ public class ShapeUI : MonoBehaviour
         SetUI();
     }
 
-    public bool IsShapeActive()
-    {
-        return _activeShape != null;
-    }
+    public bool IsShapeActive() { return _activeShape != null; }
+    public bool IsShapeLocked() { return !_activeShape.IsScaling(); }
 
-    public bool IsShapeLocked()
-    {
-        return !_activeShape.IsScaling();
-    }
+    public ShapeSO GetData() { return Shape; }
 }

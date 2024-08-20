@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public class ShapesManager : MonoBehaviour
 {
-    public static UnityEvent<List<ShapeSO>> ShapesUpdated = new UnityEvent<List<ShapeSO>>();
     public static UnityEvent AllShapesLocked = new UnityEvent();
     public List<ShapeSO> Shapes { get; private set; }
     public List<ShapeUI> ShapesUI { get; private set; }
@@ -30,7 +29,7 @@ public class ShapesManager : MonoBehaviour
     void Start()
     {
         Scaler.LockedIn.AddListener(CheckAllLocked);
-        if (RunManager.instance.GetLevel() == 0)
+        if (RunManager.instance.isTutorial)
         {
             TutorialRun();
         }
@@ -42,31 +41,38 @@ public class ShapesManager : MonoBehaviour
 
     public void TutorialRun()
     {
-        ShapeSO[] shapes = Generator.instance.GetTutorialShapes();
-        LoadUI(shapes);
-    }
-
-    public void NewRun()
-    {
-        ShapeSO[] shapes = Generator.instance.GetStartingShapes();
-        LoadUI(shapes);
-    }
-
-    public void LoadUI(ShapeSO[] shapes)
-    {
         Shapes = new List<ShapeSO>();
-        ShapesUI = new List<ShapeUI>();
-        int xOffset = 1920/2 - (100 * shapes.Length);
+        ShapeSO[] shapes = Generator.instance.GetTutorialShapes();
         foreach (ShapeSO baseSO in shapes)
         {
             ShapeSO copy = ShapeSO.Copy(baseSO);
             Shapes.Add(copy);
+        }
+        LoadUI();
+    }
+
+    public void NewRun()
+    {
+        Shapes = new List<ShapeSO>();
+        ShapeSO[] shapes = Generator.instance.GetStartingShapes();
+        foreach (ShapeSO baseSO in shapes)
+        {
+            Shapes.Add(ShapeSO.Copy(baseSO));
+        }
+        LoadUI();
+    }
+
+    public void LoadUI()
+    {
+        ShapesUI = new List<ShapeUI>();
+        int xOffset = 1920/2 - (100 * Shapes.Count);
+        foreach (ShapeSO shape in Shapes)
+        {
             ShapeUI shapeUI = Instantiate(prefab, new Vector2(xOffset, 100), Quaternion.identity, transform);
-            shapeUI.SetShape(copy);
+            shapeUI.SetShape(shape);
             ShapesUI.Add(shapeUI);
             xOffset += 250;
         }
-        ShapesUpdated.Invoke(Shapes);
     }
 
     private void CheckAllLocked()
@@ -99,5 +105,11 @@ public class ShapesManager : MonoBehaviour
         {
             obj.RemoveShape();
         }
+    }
+
+    public void AddShape(ShapeSO shape)
+    {
+        Shapes.Add(ShapeSO.Copy(shape));
+        LoadUI();
     }
 }

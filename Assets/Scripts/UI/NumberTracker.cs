@@ -6,7 +6,7 @@ using TMPro;
 public class NumberTracker : MonoBehaviour
 {
     [SerializeField]
-    ProductionType displayType;
+    DisplayType displayType;
     TextMeshProUGUI text;
     RunManager rm;
     // Start is called before the first frame update
@@ -21,14 +21,25 @@ public class NumberTracker : MonoBehaviour
     {
         switch (displayType)
         {
-            case ProductionType.Score:
+            case DisplayType.Score:
                 text.text = "Score: " + rm.GetRoundScore().ToString("0");
                 break;
-            case ProductionType.Currency:
+            case DisplayType.Currency:
                 text.text = "Currency: " + rm.GetRoundCurrency().ToString("0");
                 break;
-
-
+            case DisplayType.TotalCurrency:
+                text.text = "Currency: " + rm.GetTotalCurrency().ToString("0");
+                break;
+            case DisplayType.TargetScore:
+                text.text = "Next Target: " + rm.GetTargetScore().ToString("0");
+                break;
         }
     }
+}
+
+public enum DisplayType {
+    Score,
+    TargetScore,
+    Currency,
+    TotalCurrency
 }

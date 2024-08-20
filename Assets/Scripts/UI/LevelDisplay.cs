@@ -12,6 +12,7 @@ public class LevelDisplay : MonoBehaviour
     Image background;
     [SerializeField]
     Transform playSpaceAnchor;
+    GameObject map;
     Tutorial tutorial;
 
     // Start is called before the first frame update
@@ -23,15 +24,20 @@ public class LevelDisplay : MonoBehaviour
 
     void UpdateDisplay(int level, LevelSO levelData)
     {
+        if (map != null)
+        {
+            Destroy(map);
+            map = null;
+        }
         targetScore.text = string.Format("Target Score: {0}", RunManager.instance.GetTargetScore());
         levelTitle.text = levelData.LevelName;
         background.color = levelData.BackgroundColor;
-        Instantiate(levelData.PlayAreaPrefab, playSpaceAnchor);
+        map = Instantiate(levelData.PlayAreaPrefab, playSpaceAnchor);
     }
 
     public void OnBeginPress()
     {
-        if (RunManager.instance.GetLevel() == 0)
+        if (RunManager.instance.isTutorial)
         {
             if (tutorial == null)
             {

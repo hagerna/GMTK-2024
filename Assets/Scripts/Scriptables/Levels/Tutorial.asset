@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Tutorial
   m_EditorClassIdentifier: 
   LevelName: Tutorial
-  BackgroundColor: {r: 0.2506541, g: 0.0020914965, b: 0.4433962, a: 1}
+  BackgroundColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
   PlayAreaPrefab: {fileID: 2366263907871821316, guid: 234d45f7e94b3450e9e3d9691b020c5a, type: 3}

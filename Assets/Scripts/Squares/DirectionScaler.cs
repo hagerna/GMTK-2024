@@ -17,6 +17,7 @@ public class DirectionScaler : SmartScaler
     {
         base.Setup(scriptable);
         transform.rotation = Quaternion.Euler(0, 0, scriptable.rotation);
+        GetComponent<Rigidbody2D>().freezeRotation = true;
     }
 
     protected override IEnumerator Scale()
@@ -31,8 +32,7 @@ public class DirectionScaler : SmartScaler
             transform.position = startPosition + ((newScale.y/2 - 0.5f) * transform.up);
             yield return new WaitForFixedUpdate();
         }
-        activelyScaling = false;
-        LockedIn.Invoke();
+        CanNoLongerGrow();
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)

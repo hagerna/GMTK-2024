@@ -12,6 +12,7 @@ public class UpgradeSO : ScriptableObject
     public UpgradeType Type;
     public float Modifier;
     public Sprite Sprite;
+    public ShapeSO NewShape;
 }
 
 public enum UpgradeType
@@ -29,7 +30,7 @@ public enum UpgradeType
 
 public enum UpgradeClass
 {
-    Basic,
-    Advanced,
+    Upgrade,
+    Modifier,
     NewShape,
 }

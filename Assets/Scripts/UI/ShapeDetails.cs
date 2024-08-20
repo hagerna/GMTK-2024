@@ -15,6 +15,12 @@ public class ShapeDetails : MonoBehaviour
     void Start()
     {
         ShapeUI.Select.AddListener(UpdateDisplay);
+        UpgradeUI.UpgradeSelected.AddListener(CloseOnUpgradeSelect);
+    }
+
+    void CloseOnUpgradeSelect(UpgradeUI arg0)
+    {
+        CloseDetails();
     }
 
     void UpdateDisplay(ShapeUI shapeUI)
@@ -29,7 +35,7 @@ public class ShapeDetails : MonoBehaviour
         type.text = string.Format("Type: {0}", shapeData.scalerType.ToString());
         scoreMult.text = string.Format("Score Multiplier: {0}", shapeData.prodMultiplier.ToString("0.00"));
         size.text = string.Format("Size: {0} x {1}", shapeData.width, shapeData.height);
-        growth.text = string.Format("Growth: {0}/sec x {1}/sec", shapeData.verticalGrowth * 20f, shapeData.horizontalGrowth * 20f);
+        growth.text = string.Format("Growth: {0}/sec x {1}/sec", shapeData.verticalGrowth * 10f, shapeData.horizontalGrowth * 10f);
         modifiers.text = "Modifiers: None";
 
     }

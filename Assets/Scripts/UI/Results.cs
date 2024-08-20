@@ -8,7 +8,7 @@ public class Results : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI header, target, roundScore, roundCurrency, totalCurrency;
     [SerializeField]
-    GameObject resultsPopup, storeButton, endRunButton, tryAgainButton, gameOverButton;
+    GameObject resultsPopup, storeButton, endRunButton, tryAgainButton, gameOverButton, upgradesScreen;
     RunManager rm;
 
     private void Start()
@@ -54,6 +54,9 @@ public class Results : MonoBehaviour
     public void OpenStore()
     {
         HideResults();
+        upgradesScreen.SetActive(true);
+        ShapesManager.instance.ClearAllScalers();
+
     }
 
     public void TryAgain()
